@@ -52,9 +52,11 @@ struct job_t jobs[MAXJOBS]; /* The job list */
 /* End global variables */
 
 
-/* Function prototypes */
-
-/* Here are the functions that you will implement */
+/*
+ *
+ * Function prototypes
+ *
+ */
 void eval(char *cmdline);
 int builtin_cmd(char **argv);
 void do_bgfg(char **argv);
@@ -64,7 +66,11 @@ void sigchld_handler(int sig);
 void sigtstp_handler(int sig);
 void sigint_handler(int sig);
 
-/* Here are helper routines that we've provided for you */
+/* 
+ *
+ * Helper routines
+ *
+ */
 int parseline(const char *cmdline, char **argv); 
 void sigquit_handler(int sig);
 
@@ -82,8 +88,11 @@ void listjobs(struct job_t *jobs);
 void usage(void);
 void unix_error(char *msg);
 void app_error(char *msg);
+
 typedef void handler_t(int);
 handler_t *Signal(int signum, handler_t *handler);
+
+
 
 /*
  * main - The shell's main routine 
@@ -95,24 +104,30 @@ int main(int argc, char **argv)
     int emit_prompt = 1; /* emit prompt (default) */
 
     /* Redirect stderr to stdout (so that driver will get all output
-     * on the pipe connected to stdout) */
+     * on the pipe connected to stdout) 
+     */
     dup2(1, 2);
 
     /* Parse the command line */
-    while ((c = getopt(argc, argv, "hvp")) != EOF) {
-        switch (c) {
-        case 'h':             /* print help message */
-            usage();
-	    break;
-        case 'v':             /* emit additional diagnostic info */
-            verbose = 1;
-	    break;
-        case 'p':             /* don't print a prompt */
-            emit_prompt = 0;  /* handy for automatic testing */
-	    break;
-	default:
-            usage();
-	}
+    while ((c = getopt(argc, argv, "hvp")) != EOF) 
+    {
+        switch (c) 
+        {
+            case 'h':             /* print help message */
+                usage();
+            break;
+
+            case 'v':             /* emit additional diagnostic info */
+                verbose = 1;
+            break;
+
+            case 'p':             /* don't print a prompt */
+                emit_prompt = 0;  /* handy for automatic testing */
+            break;
+
+            default:
+                usage();
+        }
     }
 
     /* Install the signal handlers */
@@ -129,24 +144,29 @@ int main(int argc, char **argv)
     initjobs(jobs);
 
     /* Execute the shell's read/eval loop */
-    while (1) {
+    while (1) 
+    {
 
-	/* Read command line */
-	if (emit_prompt) {
-	    printf("%s", prompt);
-	    fflush(stdout);
-	}
-	if ((fgets(cmdline, MAXLINE, stdin) == NULL) && ferror(stdin))
-	    app_error("fgets error");
-	if (feof(stdin)) { /* End of file (ctrl-d) */
-	    fflush(stdout);
-	    exit(0);
-	}
+        /* Read command line */
+        if (emit_prompt) 
+        {
+            printf("%s", prompt);
+            fflush(stdout);
+        }
 
-	/* Evaluate the command line */
-	eval(cmdline);
-	fflush(stdout);
-	fflush(stdout);
+        if ((fgets(cmdline, MAXLINE, stdin) == NULL) && ferror(stdin))
+            app_error("fgets error");
+
+        if (feof(stdin)) 
+        { /* End of file (ctrl-d) */
+            fflush(stdout);
+            exit(0);
+        }
+
+        /* Evaluate the command line */
+        eval(cmdline);
+        fflush(stdout);
+        fflush(stdout);
     } 
 
     exit(0); /* control never reaches here */
@@ -228,6 +248,12 @@ int parseline(const char *cmdline, char **argv)
 /* 
  * builtin_cmd - If the user has typed a built-in command then execute
  *    it immediately.  
+ * 
+ * Goes through all the possible builtin commands.
+ * 
+ * If the arg matches any of them, run that command
+ * and return 1.
+ * Otherwise return 0.
  */
 int builtin_cmd(char **argv) 
 {
@@ -295,7 +321,8 @@ void sigtstp_handler(int sig)
  **********************************************/
 
 /* clearjob - Clear the entries in a job struct */
-void clearjob(struct job_t *job) {
+void clearjob(struct job_t *job) 
+{
     job->pid = 0;
     job->jid = 0;
     job->state = UNDEF;
@@ -303,7 +330,8 @@ void clearjob(struct job_t *job) {
 }
 
 /* initjobs - Initialize the job list */
-void initjobs(struct job_t *jobs) {
+void initjobs(struct job_t *jobs) 
+{
     int i;
 
     for (i = 0; i < MAXJOBS; i++)
