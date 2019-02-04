@@ -1,9 +1,8 @@
 # Makefile for the CS:APP Shell Lab
 
-BYUNETID = NOBODY
 VERSION = 1
-HANDINDIR = /users/faculty/casey/cs324-handin/winter2018/shlab
 DRIVER = ./sdriver.pl
+TESTDRIVER = ./checktsh.pl
 TSH = ./tsh
 TSHREF = ./tshref
 TSHARGS = "-p"
@@ -14,49 +13,77 @@ FILES = $(TSH) ./myspin ./mysplit ./mystop ./myint
 all: $(FILES)
 
 ##################
-# Handin your work
-##################
-handin:
-	cp tsh.c $(HANDINDIR)/$(BYUNETID)-$(VERSION)-tsh.c && \
-		chmod 640 $(HANDINDIR)/$(BYUNETID)-$(VERSION)-tsh.c
-
-
-##################
 # Regression tests
 ##################
 
-# Run tests using the student's shell program
+# Compare output from student shell and reference shell
+testall:
+	$(TESTDRIVER)
 test01:
-	$(DRIVER) -t trace01.txt -s $(TSH) -a $(TSHARGS)
+	$(TESTDRIVER) -v -t trace01.txt
 test02:
-	$(DRIVER) -t trace02.txt -s $(TSH) -a $(TSHARGS)
+	$(TESTDRIVER) -v -t trace02.txt
 test03:
-	$(DRIVER) -t trace03.txt -s $(TSH) -a $(TSHARGS)
+	$(TESTDRIVER) -v -t trace03.txt
 test04:
-	$(DRIVER) -t trace04.txt -s $(TSH) -a $(TSHARGS)
+	$(TESTDRIVER) -v -t trace04.txt
 test05:
-	$(DRIVER) -t trace05.txt -s $(TSH) -a $(TSHARGS)
+	$(TESTDRIVER) -v -t trace05.txt
 test06:
-	$(DRIVER) -t trace06.txt -s $(TSH) -a $(TSHARGS)
+	$(TESTDRIVER) -v -t trace06.txt
 test07:
-	$(DRIVER) -t trace07.txt -s $(TSH) -a $(TSHARGS)
+	$(TESTDRIVER) -v -t trace07.txt
 test08:
-	$(DRIVER) -t trace08.txt -s $(TSH) -a $(TSHARGS)
+	$(TESTDRIVER) -v -t trace08.txt
 test09:
-	$(DRIVER) -t trace09.txt -s $(TSH) -a $(TSHARGS)
+	$(TESTDRIVER) -v -t trace09.txt
 test10:
-	$(DRIVER) -t trace10.txt -s $(TSH) -a $(TSHARGS)
+	$(TESTDRIVER) -v -t trace10.txt
 test11:
-	$(DRIVER) -t trace11.txt -s $(TSH) -a $(TSHARGS)
+	$(TESTDRIVER) -v -t trace11.txt
 test12:
-	$(DRIVER) -t trace12.txt -s $(TSH) -a $(TSHARGS)
+	$(TESTDRIVER) -v -t trace12.txt
 test13:
-	$(DRIVER) -t trace13.txt -s $(TSH) -a $(TSHARGS)
+	$(TESTDRIVER) -v -t trace13.txt
 test14:
-	$(DRIVER) -t trace14.txt -s $(TSH) -a $(TSHARGS)
+	$(TESTDRIVER) -v -t trace14.txt
 test15:
-	$(DRIVER) -t trace15.txt -s $(TSH) -a $(TSHARGS)
+	$(TESTDRIVER) -v -t trace15.txt
 test16:
+	$(TESTDRIVER) -v -t trace16.txt
+
+# Run tests using the student's shell program
+stest01:
+	$(DRIVER) -t trace01.txt -s $(TSH) -a $(TSHARGS)
+stest02:
+	$(DRIVER) -t trace02.txt -s $(TSH) -a $(TSHARGS)
+stest03:
+	$(DRIVER) -t trace03.txt -s $(TSH) -a $(TSHARGS)
+stest04:
+	$(DRIVER) -t trace04.txt -s $(TSH) -a $(TSHARGS)
+stest05:
+	$(DRIVER) -t trace05.txt -s $(TSH) -a $(TSHARGS)
+stest06:
+	$(DRIVER) -t trace06.txt -s $(TSH) -a $(TSHARGS)
+stest07:
+	$(DRIVER) -t trace07.txt -s $(TSH) -a $(TSHARGS)
+stest08:
+	$(DRIVER) -t trace08.txt -s $(TSH) -a $(TSHARGS)
+stest09:
+	$(DRIVER) -t trace09.txt -s $(TSH) -a $(TSHARGS)
+stest10:
+	$(DRIVER) -t trace10.txt -s $(TSH) -a $(TSHARGS)
+stest11:
+	$(DRIVER) -t trace11.txt -s $(TSH) -a $(TSHARGS)
+stest12:
+	$(DRIVER) -t trace12.txt -s $(TSH) -a $(TSHARGS)
+stest13:
+	$(DRIVER) -t trace13.txt -s $(TSH) -a $(TSHARGS)
+stest14:
+	$(DRIVER) -t trace14.txt -s $(TSH) -a $(TSHARGS)
+stest15:
+	$(DRIVER) -t trace15.txt -s $(TSH) -a $(TSHARGS)
+stest16:
 	$(DRIVER) -t trace16.txt -s $(TSH) -a $(TSHARGS)
 
 # Run the tests using the reference shell program
