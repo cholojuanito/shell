@@ -227,7 +227,7 @@ void eval(char *cmdline)
             // Set the child's pgid to something different
             // This prevents the whole tsh program from crashing
             // when SIGINT is sent
-            setpgid(pID, 0);
+            setpgid(0, 0);
 
             if (execvp(argv[0], argv) < 0) 
             {
@@ -454,6 +454,7 @@ void waitfg(pid_t pid)
     {
         // Just wait for the fg job to finish
         while(pid == fgpid(jobs)){
+            sleep(1);
         }
     }
 
