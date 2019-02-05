@@ -11,6 +11,7 @@ tshref		# The reference shell binary.
 
 # The remaining files are used to test your shell
 sdriver.pl	# The trace-driven shell driver
+checktsh.pl	# The script for comparing user output to reference output
 trace*.txt	# The 15 trace files that control the shell driver
 tshref.out 	# Example output of the reference shell on all 15 traces
 
