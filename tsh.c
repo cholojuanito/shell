@@ -473,7 +473,37 @@ void waitfg(pid_t pid)
  */
 void sigchld_handler(int sig) 
 {
-    printf("CHILD handler");
+    //printf("CHILD handler");
+
+    int status;
+    pid_t pID;
+
+    // This is the "reaping" loop, whenever a child process changes state
+    // it will either be "stopped" or "terminated"
+    while ((pID = waitpid(fgpid(jobs), &status, WNOHANG|WUNTRACED)) > 0) 
+    {
+        // Child process stopped
+        if (WIFSTOPPED(status))
+        {
+            // Set the process state to "stopped"
+            getjobpid(jobs, pID)->state = ST;
+            int jID = pid2jid(pID);
+            printf("Job [%d] (%d) stopped by signal %d\n", jID, pID, WSTOPSIG(status));
+        }
+        // Child process terminated
+        else if (WIFSIGNALED(status)) 
+        {
+            // Find jID by pID then delete it
+            int jID = pid2jid(pID);
+            printf("Job [%d] (%d) terminated by signal %d\n", jID, pID, WTERMSIG(status));
+            deletejob(jobs, pID);
+        }
+        // Child process exited
+        else if (WIFEXITED(status))
+        {
+            deletejob(jobs, pID);
+        }
+    }
     return;
 }
 
@@ -484,7 +514,15 @@ void sigchld_handler(int sig)
  */
 void sigint_handler(int sig) 
 {
-    printf("INTERRUPT handler");
+    //printf("INTERRUPT handler");
+    
+    pid_t pID = fgpid(jobs);
+
+    if (pID != 0) 
+    {
+        // Terminate all the process in the group
+        kill(-pID, sig);
+    }
     return;
 }
 
@@ -495,7 +533,15 @@ void sigint_handler(int sig)
  */
 void sigtstp_handler(int sig) 
 {
-    printf("STOP handler");
+    //printf("STOP handler");
+
+    pid_t pID = fgpid(jobs);
+
+    if (pID != 0) 
+    {
+        // Stop all processes in the group
+        kill(-pID, sig);
+    }
     return;
 }
 
