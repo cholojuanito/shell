@@ -231,7 +231,7 @@ void eval(char *cmdline)
 
             if (execvp(argv[0], argv) < 0) 
             {
-                app_error("Command not found\n");
+                printf("%s: Command not found\n", argv[0]);
                 exit(1);
             }
 
@@ -377,7 +377,7 @@ void do_bgfg(char **argv)
     // If tmp is null print an error msg.
     if (tmp == NULL)
     {
-        printf("%s: command requires pid or jid argument\n", argv[0]);
+        printf("%s command requires PID or %% job id argument\n", argv[0]);
         return;
     }
 
@@ -412,7 +412,7 @@ void do_bgfg(char **argv)
     }
     else
     {
-        printf("%s: command requires pid or jid argument\n", argv[0]);
+        printf("%s: argument must be a PID or %% job id\n", argv[0]);
         return;
     }
     
@@ -423,11 +423,13 @@ void do_bgfg(char **argv)
     // Do the actual fg and bg stuff
     if(!strcmp(argv[0], FG_CMD)) 
     {
+        // Set job state to being run in foreground
         job->state = FG;
         waitfg(job->pid);
     } 
     else
     {
+        // Set job state to being run in background
         printf("[%d] (%d) %s", job->jid, job->pid, job->cmdline);
         job->state = BG;
     } 
